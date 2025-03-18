@@ -32,3 +32,8 @@ Create table dbo.RAWTinderData(
 	UserAge INT
 );
 
+ALTER TABLE dbo.RAWTinderData ALTER COLUMN UserAge VARCHAR(50);
+
+exec sp_columns RAWTinderData;
+
+SELECT TOP(10) * FROM dbo.RAWTinderData ;
