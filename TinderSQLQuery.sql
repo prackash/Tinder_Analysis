@@ -94,3 +94,5 @@ UPDATE dbo.StageTinderData SET DurationSinceCreation = DATEDIFF(MONTH,CreateDate
 SELECT 
     MAX(DATEADD(DAY, No_Of_days, CreateDate)) AS MaxAdjustedEndDate
 FROM dbo.StageTinderData;
+
+EXEC sp_rename 'dbo.StageTinderData.DurationSinceCreation', 'EstimatedDurationSinceCreation','COLUMN';
