@@ -69,3 +69,28 @@ CREATE TABLE dbo.StageTinderData(
 Select TOP(10)* FROM dbo.StageTinderData
 
 ALTER TABLE dbo.StageTinderData ADD ApproxDuration AS DATEDIFF(MONTH,CreateDate,GETDATE())/12.0
+
+
+Select No_Of_Days, CreateDate, DurationSinceCreation from dbo.StageTinderData Order By DurationSinceCreation DESC;
+
+
+Select MAX(DATEADD(DAY,No_Of_Days, CreateDate)) as EstimatedDays from dbo.StageTinderData;
+
+
+ALTER TABLE dbo.StageTinderData DROP COLUMN ApproxDuration;
+
+-- ALTER TABLE dbo.StageTinderData 
+-- ADD ApproxDuration as 
+--	DATEDIFF(MONTH,CreateDate, 
+--		(SELECT MAX(DATEADD(DAY,No_Of_Days, CreateDate)) FROM dbo.StageTinderData))/12.0;
+
+DECLARE @AdjustedEndDate DATE;
+SELECT @AdjustedEndDate = MAX(DATEADD(DAY,No_Of_Days,CreateDate))
+FROM dbo.StageTinderData
+ALTER TABLE dbo.StageTinderData ADD DurationSinceCreation FLOAT;
+UPDATE dbo.StageTinderData SET DurationSinceCreation = DATEDIFF(MONTH,CreateDate, @AdjustedEndDate)/12.0;
+
+
+SELECT 
+    MAX(DATEADD(DAY, No_Of_days, CreateDate)) AS MaxAdjustedEndDate
+FROM dbo.StageTinderData;
